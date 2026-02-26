@@ -624,6 +624,39 @@ namespace ConsoleApp1
             }
         }
 
+        static void gradesomething()
+        {
+            int[] arr = new int[8];
+            int sum = 0;
+            int aboveAveragecounter = 0;
+            int underAveragecounter = 0;
+
+            for (int i = 0;i < arr.Length;i++)
+            {
+                Console.Write("Enter your grade: ");
+                arr[i] = int.Parse(Console.ReadLine());
+                sum += arr[i];
+            }
+
+            double average = sum / (double)arr.Length;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] > average)
+                {
+                    aboveAveragecounter++;
+                    Console.WriteLine("The grade: " + arr[i] + " is above average");
+                }
+                else
+                {
+                    underAveragecounter++;
+                }
+            }
+
+            Console.WriteLine("Your average grade is: " + sum / (double)arr.Length);
+            Console.WriteLine("You had: " + aboveAveragecounter + " above average grades");
+        }
+
         static void Main(string[] args)
         {
             //sumcalc();
@@ -645,12 +678,12 @@ namespace ConsoleApp1
             //task16();
             //task4();
             //nummbercontaining1();
-            stupid10numberarrayshit();
+            //stupid10numberarrayshit();
             //votes();
             //igloo();
             //task1();
             //task6();
-
+            gradesomething();
         }
     }
 }
