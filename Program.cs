@@ -11,74 +11,94 @@ namespace ConsoleApp1
 {
     internal class Program
     {
-        static void sumcalc()
+        static void CalculateSum()
         {
-            int num = 0;
             int sum = 0;
 
             while (sum < 100)
             {
                 Console.Write("Enter a number: ");
-                num = int.Parse(Console.ReadLine());
-                sum += num;
+                if (int.TryParse(Console.ReadLine(), out int num))
+                {
+                    sum += num;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid integer.");
+                }
             }
-            Console.WriteLine("The total sum is " + sum);
-        }
-        static void Read3even()
-        {
-            int count = 0, num;
 
-            while (count < 3)
+            Console.WriteLine($"The total sum is {sum}");
+        }
+
+        static void ReadThreeEvenNumbers()
+        {
+            int evenCount = 0;
+
+            while (evenCount < 3)
             {
                 Console.Write("Enter a number: ");
-                num = int.Parse(Console.ReadLine());
-
-                if (num % 2 == 0)
-                    count++;
+                if (int.TryParse(Console.ReadLine(), out int num) && num % 2 == 0)
+                {
+                    evenCount++;
+                }
             }
+
+            Console.WriteLine("Three even numbers have been entered.");
         }
-        static void readtill3digitnumber()
+
+        static void ReadUntilThreeDigitNumber()
         {
             int num = 0;
 
             while (num < 100 || num > 999)
             {
                 Console.Write("Enter a 3-digit number: ");
-                num = int.Parse(Console.ReadLine());
+                int.TryParse(Console.ReadLine(), out num);
             }
 
+            Console.WriteLine($"Valid 3-digit number entered: {num}");
         }
-        static void group2()
+
+        static void PrintNumberTriangle()
         {
-            for (int k=7;k>=1;k--)
+            for (int row = 7; row >= 1; row--)
             {
-                for (int j = 1; j <= k; j++)
+                for (int col = 1; col <= row; col++)
                 {
-                    Console.Write(j + "");
+                    Console.Write(col);
                 }
                 Console.WriteLine();
             }
         }
-        static void printingtriangle()
+
+        static void PrintNumberPyramid()
         {
             Console.Write("How many rows do you want: ");
-            int rows = int.Parse(Console.ReadLine());
-
-            for (int i = 1; i <= rows; i++)
+            if (int.TryParse(Console.ReadLine(), out int rows))
             {
-                for (int j = 1; j <= rows - i; j++);
-                Console.WriteLine(" ");
-                for (int k = 1; k <= i; k++)
-                    Console.WriteLine(i);
-                Console.WriteLine();
-                
+                for (int i = 1; i <= rows; i++)
+                {
+                    for (int j = 1; j <= rows - i; j++)
+                    {
+                        Console.Write(" ");
+                    }
+
+                    for (int k = 1; k <= i; k++)
+                    {
+                        Console.Write(i + " ");
+                    }
+                    Console.WriteLine();
+                }
             }
         }
-        static void printingshape()
+
+        static void PrintRectangle()
         {
-            Console.Write("Enter the amount of rows: ");
+            Console.Write("Enter the number of rows: ");
             int rows = int.Parse(Console.ReadLine());
-            Console.Write("Enter the amount of cols: ");
+
+            Console.Write("Enter the number of columns: ");
             int cols = int.Parse(Console.ReadLine());
 
             for (int i = 0; i < rows; i++)
@@ -90,50 +110,50 @@ namespace ConsoleApp1
                 Console.WriteLine();
             }
         }
-        static void littertask()
+
+        static void CalculateLiterStatistics()
         {
             int days = 7;
-            double litters = 0;
-            bool under1 = false;
-            double sum = 0;
-            int daysover3 = 0;
+            double totalLiters = 0;
+            int daysOverThreeLiters = 0;
 
             for (int i = 0; i < days; i++)
             {
-                under1 = false;
-                Console.Write("Enter the amount of litters: ");
-                litters = double.Parse(Console.ReadLine());
-                sum += litters;
+                Console.Write($"Enter the amount of liters for day {i + 1}: ");
+                double liters = double.Parse(Console.ReadLine());
 
-                if (litters < 1)
+                totalLiters += liters;
+                bool isUnderOneLiter = liters < 1;
+
+                if (liters >= 3)
                 {
-                    under1 = true;
+                    daysOverThreeLiters++;
                 }
 
-                if (litters < 3)
-                {
-                    daysover3++;
-                }
-
-                Console.WriteLine("The sum is: " + sum);
+                Console.WriteLine($"Running sum is: {totalLiters}");
             }
 
+            Console.WriteLine($"Days over 3 liters: {daysOverThreeLiters}");
         }
 
-        static void whilepractice()
+        static void ShowMenuAndExecute()
         {
             while (true)
             {
-                Console.WriteLine("\nChoose one of the following options:\n1- Squared Value\n2- Line of stars\n0- Exit");
+                Console.WriteLine("\nChoose one of the following options:\n1 - Squared Value\n2 - Line of stars\n0 - Exit");
                 Console.Write("Enter your choice --> ");
 
-                int choice = int.Parse(Console.ReadLine());
+                if (!int.TryParse(Console.ReadLine(), out int choice))
+                {
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                    continue;
+                }
 
                 if (choice == 1)
                 {
                     Console.Write("Enter a number: ");
                     double input = double.Parse(Console.ReadLine());
-                    Console.WriteLine(input * input);
+                    Console.WriteLine($"Result: {input * input}");
                 }
                 else if (choice == 2)
                 {
@@ -144,546 +164,476 @@ namespace ConsoleApp1
                     {
                         Console.Write("*");
                     }
+                    Console.WriteLine();
                 }
                 else if (choice == 0)
                 {
-                    Console.WriteLine("See you later aligator");
+                    Console.WriteLine("Goodbye!");
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Invalid number");
-                    break;
+                    Console.WriteLine("Invalid number choice.");
                 }
             }
         }
 
-        static void IsPalindrome(int num)
+        static bool IsPalindrome(int originalNum)
         {
-            int digit, newNum = 0, n = num;
-            while (num > 0)
+            int newNum = 0;
+            int tempNum = originalNum;
+
+            while (tempNum > 0)
             {
-                digit = num % 10;
-                newNum = newNum * 10 + digit;
-                n /= 10;
+                int digit = tempNum % 10;
+                newNum = (newNum * 10) + digit;
+                tempNum /= 10;
             }
-            if (newNum == num) ;
+
+            return newNum == originalNum;
         }
 
-        static void maharach()
+        static void InitializeBasicArray()
         {
             int[] numbers = new int[5];
             numbers[0] = 5;
             numbers[2] = 7;
             numbers[4] = 6;
-
         }
 
-        static int[] copyarr(int[] arr)
+        static int[] CopyArray(int[] originalArray)
         {
-            int[] newArry = new int[arr.Length];
-            for (int i = 0; i < newArry.Length; i++)
+            int[] newArray = new int[originalArray.Length];
+            for (int i = 0; i < newArray.Length; i++)
             {
-                newArry[1] = arr[i];
+                newArray[i] = originalArray[i];
             }
-            return newArry;
-        }
-        static void arr()
-        {
-            int[] arr1 = { 1, 2, 3 };
-            int[] arr2 = copyarr (arr1);
-            int i = 0;
+            return newArray;
         }
 
-        static void stupidshitidksomeshitwithnumbersandarraysidk()
+        static void TestArrayCopy()
+        {
+            int[] original = { 1, 2, 3 };
+            int[] copy = CopyArray(original);
+        }
+
+        static void CalculateGradeStatistics()
         {
             int[] grades = new int[10];
-            int i = 0;
             int sum = 0;
-            double avg = 0;
-            int counter = 0;
-            Random rand = new Random();
+            int passedCount = 0;
+            Random random = new Random();
 
-            Console.WriteLine("the grades are: ");
-            for (i = 0; i < grades.Length; i++)
+            Console.WriteLine("The grades are: ");
+            for (int i = 0; i < grades.Length; i++)
             {
-                grades[i] = rand.Next(0, 101);
+                grades[i] = random.Next(0, 101);
                 Console.Write(grades[i] + " ");
-            }
+                sum += grades[i];
 
-
-            Console.WriteLine();
-            for (i = 0; i < grades.Length; i++)
-            {
                 if (grades[i] >= 55)
                 {
-                    counter++;
-                }
-                sum += grades[i];
-            }
-
-            avg = (double)sum / grades.Length;
-            Console.WriteLine("the avg is " + avg + " and the number of grades that passed: " + counter);
-        }
-
-        static void taskarray()
-        {
-            int[] arr1 = { 1, 2, 3, 4, 5 };
-            int[] arr2 = new int[5];
-
-            for (int i = 0; i < arr1.Length; i++)
-            {
-                arr2[i] = arr1[i];
-                Console.WriteLine(arr2[i]);
-            }
-        }
-
-        static void printarray(int[] arr)
-        {
-            for (int i = 0; i < arr.Length; i++) ;
-            {
-                Console.WriteLine(arr[1] + " ");
-            }
-        }
-
-        static void PrintHistogram(int[] arr) // idk whats wrong with this
-        {
-            Console.WriteLine("There are" + arr.Length + "numbers in the array: ");
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                Console.WriteLine(arr[i] + ": ");
-                for (int j = 0; i < arr[i]; j++)
-                {
-
-                    Console.WriteLine("*");
-                    Console.WriteLine();
+                    passedCount++;
                 }
             }
+
+            Console.WriteLine();
+            double average = (double)sum / grades.Length;
+            Console.WriteLine($"The average is {average:F2} and the number of passing grades: {passedCount}");
         }
 
-        static bool IsSymetricArray(int[] arr)
+        static void CopyFixedArray()
         {
-            int left = 0, right = arr.Length - 1;
-            bool isSymetric = true;
+            int[] originalArray = { 1, 2, 3, 4, 5 };
+            int[] newArray = new int[5];
 
-            while (left < right && isSymetric)
+            for (int i = 0; i < originalArray.Length; i++)
             {
-                if (arr[left] != arr[right])
-                    isSymetric = false;
-
-                left++;
-                right--;
-            }
-            
-            return isSymetric;
-        }
-
-        static void lettersshit()
-        {
-            int letterIndex = 0;
-            int firstIndex = 97;
-            char[] chars = { 'a', 'b', 'c', 'd', 'a'};
-            int[] counter = new int[26];
-            for(int i = 0; i < chars.Length; i++)
-            {
-                letterIndex = chars[i] - firstIndex;
-                counter[letterIndex]++;
-            }
-            for (int i = 0; i < chars.Length; i++)
-            {
-                Console.Write("The letter " + counter[i] + " shows" + counter[chars[i] - firstIndex] + " times");
+                newArray[i] = originalArray[i];
+                Console.WriteLine(newArray[i]);
             }
         }
 
-        static void task13()
+        static void PrintArray(int[] arrayToPrint)
         {
-            int[] arr = { 1, 2, 6, 2, 4 };
-            bool goingUp = true;
-            for (int i = 0; i < arr.Length && goingUp; i++)
+            for (int i = 0; i < arrayToPrint.Length; i++)
             {
-                if (i + 1 != arr.Length)
+                Console.Write(arrayToPrint[i] + " ");
+            }
+            Console.WriteLine();
+        }
+
+        static void PrintHistogram(int[] data)
+        {
+            Console.WriteLine($"There are {data.Length} numbers in the array:");
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                Console.Write($"{data[i]}: ");
+
+                for (int j = 0; j < data[i]; j++)
                 {
-                    if (arr[i] >= arr[i + 1])
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        static bool IsSymmetricArray(int[] arrayToCheck)
+        {
+            int leftIndex = 0;
+            int rightIndex = arrayToCheck.Length - 1;
+            bool isSymmetric = true;
+
+            while (leftIndex < rightIndex && isSymmetric)
+            {
+                if (arrayToCheck[leftIndex] != arrayToCheck[rightIndex])
+                {
+                    isSymmetric = false;
+                }
+
+                leftIndex++;
+                rightIndex--;
+            }
+
+            return isSymmetric;
+        }
+
+        static void CountLetterFrequencies()
+        {
+            char[] characters = { 'a', 'b', 'c', 'd', 'a' };
+            int[] letterCounts = new int[26];
+            int asciiOffset = 'a';
+
+            foreach (char c in characters)
+            {
+                int index = c - asciiOffset;
+                letterCounts[index]++;
+            }
+
+            for (int i = 0; i < letterCounts.Length; i++)
+            {
+                if (letterCounts[i] > 0)
+                {
+                    char currentLetter = (char)(i + asciiOffset);
+                    Console.WriteLine($"The letter '{currentLetter}' shows up {letterCounts[i]} times.");
+                }
+            }
+        }
+
+        static void CheckIfArrayAscends()
+        {
+            int[] numbers = { 1, 2, 6, 2, 4 };
+            bool isAscending = true;
+
+            for (int i = 0; i < numbers.Length - 1 && isAscending; i++)
+            {
+                if (numbers[i] >= numbers[i + 1])
+                {
+                    isAscending = false;
+                }
+            }
+
+            Console.WriteLine(isAscending ? "The array is going up" : "The array is not going up");
+        }
+
+        static void CheckIfArrayIsHalved()
+        {
+            int[] numbers = { 1, 5, 9, 1, 5, 9 };
+            bool halvesMatch = true;
+
+            if (numbers.Length % 2 == 0)
+            {
+                int midPoint = numbers.Length / 2;
+                for (int i = 0; i < midPoint && halvesMatch; i++)
+                {
+                    if (numbers[i] != numbers[midPoint + i])
                     {
-                        goingUp = false;
+                        halvesMatch = false;
                     }
                 }
             }
-            if (goingUp)
-            {
-                Console.WriteLine("the arr is going up");
-            }
             else
             {
-                Console.WriteLine("the arr is not going up");
+                halvesMatch = false;
             }
-        }
-        static void task14()
-        {
-            bool same = true;
-            int[] arr = { 1, 5, 9, 1, 5, 9 };
-            if (arr.Length % 2 == 0)
-            {
-                int len = arr.Length / 2;
-                for (int i = 0; i < len && same; i++)
-                {
-                    for (int j = len; j < arr.Length && same; j++)
-                    {
-                        if (arr[i] != arr[j])
-                        {
-                            same = false;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                same = false;
-            }
-            if (same)
-            {
-                Console.WriteLine("half");
-            }
-            else
-            {
-                Console.WriteLine("not half");
-            }
+
+            Console.WriteLine(halvesMatch ? "Halves match" : "Halves do not match");
         }
 
-        static void task15()
+        static void MergeMaxFromTwoArrays()
         {
-            int[] a = { 3, 7, 12, 19, 25, 31, 42, 56, 68, 90 };
-            int[] b = { 3, 14, 22, 37, 12, 30, 63, 78, 64, 100 };
-            int[] c = new int[10];
+            int[] arrayA = { 3, 7, 12, 19, 25, 31, 42, 56, 68, 90 };
+            int[] arrayB = { 3, 14, 22, 37, 12, 30, 63, 78, 64, 100 };
+            int[] mergedMaxArray = new int[10];
 
-            for (int i = 0; i < a.Length; i++)
+            for (int i = 0; i < arrayA.Length; i++)
             {
-                if (a[i] > b[i])
+                if (arrayA[i] > arrayB[i])
                 {
-                    c[i] = a[i];
+                    mergedMaxArray[i] = arrayA[i];
                 }
-                else if (a[i] < b[i])
+                else if (arrayA[i] < arrayB[i])
                 {
-                    c[i] = b[i];
+                    mergedMaxArray[i] = arrayB[i];
                 }
                 else
                 {
-                    c[i] = 0;
+                    mergedMaxArray[i] = 0;
                 }
             }
-            for (int i = 0; i < c.Length; i++)
-            {
-                Console.WriteLine(c[i] + " ");
-            }
+
+            Console.WriteLine(string.Join(", ", mergedMaxArray));
         }
-        static void task16()
+
+        static void FindMostFrequentElement()
         {
-            int[] arr = { 1, 6, 6, 6, 1, 6, 1 };
-            int famNum = 0;
-            int maxCount = 0;
+            int[] numbers = { 1, 6, 6, 6, 1, 6, 1 };
+            int mostFrequentNumber = 0;
+            int maxOccurrences = 0;
 
-            for (int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < numbers.Length; i++)
             {
-                int counter = 0;
+                int currentCount = 0;
 
-                for (int j = i; j < arr.Length; j++)
+                for (int j = i; j < numbers.Length; j++)
                 {
-                    if (arr[i] == arr[j])
+                    if (numbers[i] == numbers[j])
                     {
-                        counter++;
+                        currentCount++;
                     }
                 }
 
-                if (counter > maxCount)
+                if (currentCount > maxOccurrences)
                 {
-                    maxCount = counter;
-                    famNum = arr[i];
+                    maxOccurrences = currentCount;
+                    mostFrequentNumber = numbers[i];
                 }
             }
-            Console.WriteLine("the fam num is " + famNum + " showing up " + maxCount + " times");
+
+            Console.WriteLine($"The most frequent number is {mostFrequentNumber}, showing up {maxOccurrences} times.");
         }
 
-        static void task4()
+        static void TallyVotes()
         {
-            char[] letter = { 't', 'e', 'n', 'g', 'k', 'l', 'd', 'f', 'v', 'x' };
-            int[] counter = new int[26];
-            for (int i = 0; i< counter.Length; i++)
+            string[] candidates = { "Candidate 1", "Candidate 2", "Candidate 3", "Candidate 4", "Candidate 5",
+                                    "Candidate 6", "Candidate 7", "Candidate 8", "Candidate 9", "Candidate 10" };
+            int[] voteCounts = new int[candidates.Length];
+
+            while (true)
             {
-                counter[letter[i] + 97]++;
-            }
-            for (int i =0; i < counter.Length; i++)
-            {
-                Console.WriteLine(counter[i + 97] + " is" + counter);
-            }
-        }
+                Console.WriteLine("\nEnter a number between 1 to 10 to vote for a candidate, or 0 to exit:");
 
-        static void nummbercontaining1()
-        {
-            int max = 0;
-            int[] arr = new int[30];
-            Random rand = new Random();
-            int digit = 0;
-            int counter = 0;
-
-            Console.Write("Enter a number: ");
-            digit = int.Parse(Console.ReadLine());
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = rand.Next(10, 100);
-                Console.Write(arr[i] + " ");
-
-                if (arr[i] % 10 == digit || arr[i] / 10 == digit)
+                for (int i = 0; i < candidates.Length; i++)
                 {
-                    counter++;
-
-                    if (arr[i] > max)
-                    {
-                        max = arr[i];
-                    }
+                    Console.WriteLine($"{i + 1} - {candidates[i]}");
                 }
-            }
-            Console.WriteLine("");
-            Console.WriteLine("The number " + digit + " Showed up " + counter + " Times");
-            Console.WriteLine("The max number that showed up that had the digit " + digit + " was " + max);
-        }
 
-        static void stupid10numberarrayshit()
-        {
-            int[] arr1 = new int[10];
-            Random rand = new Random();
-            int counter = 0;
-
-            for (int i = 0; i < arr1.Length;i++)
-            {
-                arr1[i] = rand.Next(0, 10);
-                Console.Write(arr1[i] + " ");
-            }
-        }
-
-        static void votes()
-        {
-            string winner = " ";
-            int maxVotes = 0;
-
-            int counterVotes = 0;
-            int choice = 0;
-            string[] names = {"epstein", "bibi", "trump", "diddy", "omer", "alsu", "display flex"
-            , "my knee grow", "notion", "калькулятор"};
-            int[] counter = new int[names.Length];
-            bool exit = false;
-            while (!exit)
-            {
-                do
+                if (!int.TryParse(Console.ReadLine(), out int choice))
                 {
-                    Console.WriteLine("enter a num beetween 1 to 10 to vote for:");
-                    Console.WriteLine("1 - epstein 2 - bibi 3 - trump");
-                    Console.WriteLine("4 - diddy 5 - omer 6 - alsu");
-                    Console.WriteLine("7 - display flex 8 - my knee grow");
-                    Console.WriteLine("9 - notion 10 - калькулятор 0 - for exit");
-                    choice = int.Parse(Console.ReadLine());
-                    if (choice < 0 || choice > 10)
-                    {
-                        exit = true;
-                    }
-                    else
-                    {
-                        counter[choice - 1]++;
-                        counterVotes++;
-                    }
-                    {
-                        Console.WriteLine("its out of range try again");
-                        Console.WriteLine("----------------------------------------");
-                    }
+                    Console.WriteLine("Invalid input. Please enter a number.");
+                    continue;
                 }
-                while (choice < 0 || choice > 10);
+
                 if (choice == 0)
-
-
-                    Console.WriteLine("thanks for voting");
-            }
-            for (int i = 0; i < names.Length; i++)
-            {
-                if (counter[i] > maxVotes)
                 {
-                    maxVotes = counter[i];
-                    winner = names[i];
+                    Console.WriteLine("Thanks for voting!");
+                    break;
+                }
+
+                if (choice < 1 || choice > 10)
+                {
+                    Console.WriteLine("Choice is out of range. Try again.");
+                    Console.WriteLine("----------------------------------------");
+                }
+                else
+                {
+                    voteCounts[choice - 1]++;
                 }
             }
-            Console.WriteLine("the winner is " + winner + " who got " + maxVotes + " votes");
+
+            int maxVotes = 0;
+            string winner = "";
+
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                if (voteCounts[i] > maxVotes)
+                {
+                    maxVotes = voteCounts[i];
+                    winner = candidates[i];
+                }
+            }
+
+            Console.WriteLine($"\nThe winner is {winner} who got {maxVotes} votes.");
         }
 
-
-        static void igloo()
+        static void CountSmallerElements()
         {
-            int indexFound = 0;
-            int[] arr = { 42, 67, 89, 16, 53, 24, 91, 3, 68, 77, 12, 59, 34, 85, 20 };
-            Console.WriteLine("enter num: ");
-            int num = int.Parse(Console.ReadLine());
-            bool inside = false;
-            int counter = 0;
+            int[] numbers = { 42, 67, 89, 16, 53, 24, 91, 3, 68, 77, 12, 59, 34, 85, 20 };
 
-            for (int i = 0; i < arr.Length && !inside; i++)
+            Console.Write("Enter a number to search: ");
+            int targetNum = int.Parse(Console.ReadLine());
+
+            bool isInside = false;
+            int foundIndex = -1;
+            int smallerCount = 0;
+
+            for (int i = 0; i < numbers.Length && !isInside; i++)
             {
-                if (arr[i] == num)
+                if (numbers[i] == targetNum)
                 {
-                    inside = true;
-                    indexFound = i;
+                    isInside = true;
+                    foundIndex = i;
                 }
             }
-            if (inside)
+
+            if (isInside)
             {
-                for (int i = 0; i < indexFound; i++)
+                for (int i = 0; i < foundIndex; i++)
                 {
-                    if (arr[i] < num)
-                    {
-                        counter++;
-                    }
+                    if (numbers[i] < targetNum) smallerCount++;
                 }
-                Console.WriteLine("the num " + num + " is inside and there are " + counter + " numbers smaller than him before him");
+                Console.WriteLine($"The number {targetNum} is inside. There are {smallerCount} smaller numbers before it.");
             }
             else
             {
-                for (int i = 0; i < arr.Length; i++)
+                for (int i = 0; i < numbers.Length; i++)
                 {
-                    if (arr[i] < num)
-                    {
-                        counter++;
-                    }
+                    if (numbers[i] < targetNum) smallerCount++;
                 }
-                Console.WriteLine("the num " + num + " is not inside and there are " + counter + " smaller nums then him");
+                Console.WriteLine($"The number {targetNum} is not inside. There are {smallerCount} smaller numbers in total.");
             }
-
         }
 
-        static void task1()
+        static void FilterAndReplaceZeros()
         {
-            int tmp = 0;
-            int counter = 0;
-            Random rand = new Random();
-            int[] arr = new int[30];
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = rand.Next(10, 101);
-                Console.Write(arr[i] + " ");
-            }
-            Console.WriteLine();
-
-            Console.WriteLine("enter a digit");
-            int num = int.Parse(Console.ReadLine());
-            for (int i = 0; i < arr.Length; i++)
-            {
-                tmp = arr[i];
-                while (tmp > 0)
-                {
-                    if (tmp % 10 == num)
-                    {
-                        counter++;
-                    }
-                    tmp /= 10;
-
-                }
-            }
-            Console.WriteLine("the num " + num + " shows " + counter + " times");
-
-        }
-        static void task6()
-        {
+            Random random = new Random();
+            int[] beforeArray = new int[30];
+            int[] afterArray = new int[30];
             int j = 0;
-            Random rnd = new Random();
-            int[] before = new int[30];
-            int[] after = new int[30];
-            for (int i = 0; i < before.Length; i++)
+
+            for (int i = 0; i < beforeArray.Length; i++)
             {
-                before[i] = rnd.Next(0, 6);
-                Console.Write(before[i] + " ");
+                beforeArray[i] = random.Next(0, 6);
+                Console.Write(beforeArray[i] + " ");
             }
             Console.WriteLine();
-            for (int i = 0; i < before.Length; i++)
-            {
 
-                if (before[i] != 0)
+            for (int i = 0; i < beforeArray.Length; i++)
+            {
+                if (beforeArray[i] != 0)
                 {
-                    after[j] = before[i];
+                    afterArray[j] = beforeArray[i];
                     j++;
                 }
             }
-            for (int i = 0; i < after.Length; i++)
+
+            for (int i = 0; i < afterArray.Length; i++)
             {
-                Console.Write(after[i] + " ");
+                if (afterArray[i] == 0)
+                {
+                    afterArray[i] = 1;
+                }
+                Console.Write(afterArray[i] + " ");
             }
             Console.WriteLine();
-            for (int i = 0; i < after.Length; i++)
+        }
+
+        static void ProcessGrades()
+        {
+            int[] grades = new int[8];
+            int sum = 0;
+            int aboveAverageCount = 0;
+
+            for (int i = 0; i < grades.Length; i++)
             {
-                if (after[i] == 0)
+                Console.Write($"Enter grade {i + 1}: ");
+                grades[i] = int.Parse(Console.ReadLine());
+                sum += grades[i];
+            }
+
+            double average = (double)sum / grades.Length;
+            Console.WriteLine($"\nYour average grade is: {average:F2}");
+
+            foreach (int grade in grades)
+            {
+                if (grade > average)
                 {
-                    after[i] = 1;
+                    aboveAverageCount++;
+                    Console.WriteLine($"The grade {grade} is above average.");
                 }
-                Console.Write(after[i] + " ");
+            }
+
+            Console.WriteLine($"Total grades above average: {aboveAverageCount}");
+        }
+
+        static void RestrauntOrder()
+        {
+            int[] arr = new int[3];
+            string[] food = { "pizza", "salad", "pasta" };
+            int sum = 0;
+            int max = 0;
+            int maxIndex = 0;
+            int choice = 0;
+            int amount = 0;
+
+            while (true)
+            {
+                Console.Write("Enter the number 1 for pizza: ");
+                Console.Write("Enter the number 2 for salad: ");
+                Console.Write("Enter the number 3 for pasta: ");
+                Console.Write("Enter the number 0 to exit: ");
+                choice = int.Parse(Console.ReadLine());
+                
+                if (choice == 1)
+                {
+                    Console.WriteLine("Enter the amount you want: ");
+                    amount = int.Parse(Console.ReadLine());
+
+                }
+                    
             }
         }
 
-        static void gradesomething()
+        static void MostFrequentNumber()
         {
-            int[] arr = new int[8];
-            int sum = 0;
-            int aboveAveragecounter = 0;
-            int underAveragecounter = 0;
-
-            for (int i = 0;i < arr.Length;i++)
-            {
-                Console.Write("Enter your grade: ");
-                arr[i] = int.Parse(Console.ReadLine());
-                sum += arr[i];
-            }
-
-            double average = sum / (double)arr.Length;
+            int[] arr = new int[100];
+            Random rnd = new Random();
 
             for (int i = 0; i < arr.Length; i++)
             {
-                if (arr[i] > average)
-                {
-                    aboveAveragecounter++;
-                    Console.WriteLine("The grade: " + arr[i] + " is above average");
-                }
-                else
-                {
-                    underAveragecounter++;
-                }
-            }
+                arr[i] = rnd.Next(25, 96);
+                Console.Write(arr[i] + " ");
 
-            Console.WriteLine("Your average grade is: " + sum / (double)arr.Length);
-            Console.WriteLine("You had: " + aboveAveragecounter + " above average grades");
+                
+            }
+            Console.WriteLine("The most frequent number is: ");
         }
+
+
 
         static void Main(string[] args)
         {
-            //sumcalc();
-            //Read3even();
-            //readtill3digitnumber();
-            //group2();
-            //printingtriangle();
-            //littertask();
-            //printingshape();
-            //whilepractice();
-            //stupidshitidksomeshitwithnumbersandarraysidk();
-            //taskarray();
-            //PrintHistogram();
-            //IsSymetricArray(arr);
-            //lettersshit();
-            //task13();
-            //task14();
-            //task15();
-            //task16();
-            //task4();
-            //nummbercontaining1();
-            //stupid10numberarrayshit();
-            //votes();
-            //igloo();
-            //task1();
-            //task6();
-            gradesomething();
+            // CalculateSum();
+            // ReadThreeEvenNumbers();
+            // ReadUntilThreeDigitNumber();
+            // PrintNumberTriangle();
+            // PrintNumberPyramid();
+            // CalculateLiterStatistics();
+            // PrintRectangle();
+            // ShowMenuAndExecute();
+            // InitializeBasicArray();
+            // CopyFixedArray();
+            // CountLetterFrequencies();
+            // CheckIfArrayAscends();
+            // CheckIfArrayIsHalved();
+            // MergeMaxFromTwoArrays();
+            // FindMostFrequentElement();
+            // TallyVotes();
+            // CountSmallerElements();
+            // FilterAndReplaceZeros();
+            //ProcessGrades();
+            //MostFrequentNumber();
         }
     }
 }
