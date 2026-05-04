@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -610,30 +611,273 @@ namespace ConsoleApp1
             Console.WriteLine("The most frequent number is: ");
         }
 
+        public static int Exact(string[] arr, int num)
+        {
+            int count = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == num.ToString())
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
 
+        static bool FirstLastNumber()
+        {
+            Console.Write("Enter a string: ");
+            string input = Console.ReadLine();
+
+            if (input[0] == input[input.Length - 1])
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static void MiddleLetter()
+        {
+            Console.Write("Enter a string: ");
+            string st = Console.ReadLine();
+            int middlenumber = st.Length / 2;
+
+            if (st.Length % 2 == 0)
+            {
+                Console.WriteLine($"The middle letters are: {st[middlenumber - 1]} and {st[middlenumber]}");
+            }
+            else
+            {
+                Console.WriteLine($"The middle letter is: {st[middlenumber]}");
+            }
+        }
+
+        static string First3LettersLast3Letters()
+        {
+            Console.Write("Enter a string: ");
+            string input = Console.ReadLine();
+            string first3 = input.Substring(0, 3);
+            string last3 = input.Substring(input.Length - 3, 3);
+            return $"First 3 letters: {first3}, Last 3 letters: {last3}";
+        }
+
+        static int HowManyTimesCharShowsUpInString()
+        {
+            Console.Write("Enter a string: ");
+            string input = Console.ReadLine();
+            Console.Write("Enter a character to search for: ");
+            char searchChar = Console.ReadLine()[0];
+            int counter = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == searchChar)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+        static int SpacesArray(string st)
+        {
+            string[] words = st.Split(' ');
+            int output = words.Length;
+            return output;
+        }
+
+        public static void SwitchFirstAndLast()
+        {
+            int[] numbers = { 15, 36, 79, 23 };
+
+            int temp = numbers[0];
+            numbers[0] = numbers[numbers.Length - 1];
+            numbers[numbers.Length - 1] = temp;
+
+            PrintArray(numbers);
+        }
+
+        public static void CountEvenInArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+
+            int counter = 0;
+
+            for (int i = 0; i < num.Length; i++) {
+                num[i] = random.Next(0, 101);
+                if (num[i] % 2 == 0)
+                {
+                    counter++;
+                }
+            }
+            Console.WriteLine(counter);
+        }
+
+        public static void BiggerThan50InArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+            int counter = 0;
+
+            for (int i = 0; i < num.Length; i++)
+            {
+                num[i] = random.Next(0, 101);
+                if (num[i] > 50)
+                {
+                    counter++;
+                }
+            }
+            Console.WriteLine("There are " + counter + " numbers bigger than 50");
+        }
+
+        public static void SumOfArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+
+            int sum = 0;
+
+            for (int i = 0; i < num.Length; i++)
+            {
+                num[i] = random.Next(0, 101);
+                sum += num[i];
+            }
+
+            Console.WriteLine("The sum of the array is: " + sum);
+        }
+        
+        public static void AverageOfArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+
+            int average = 0;
+            int sum = 0;
+
+            for (int i = 0; i < num.Length; i++)
+            {
+                num[i] = random.Next(0, 101);
+                sum += num[i];
+                average = sum / num.Length;
+            }
+
+            Console.WriteLine("The average is " + average);
+        }
+
+        public static void SmallestBiggestNumberInArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+            num[0] = random.Next(0, 101);
+            int smallest = num[0];
+            int biggest = num[0];
+
+
+            for (int i = 1; i < num.Length; i++)
+            {
+                num[i] = random.Next(0, 101);
+
+                if (num[i] > biggest)
+                {
+                    biggest = num[i];
+                }
+                else if (num[i] < smallest)
+                {
+                    smallest = num[i];
+                }
+            }
+            Console.WriteLine("Biggest: " + biggest);
+            Console.WriteLine("Smalles: " + smallest);
+        }
+
+        public static bool IsXInArr()
+        {
+            Random random = new Random();
+            int[] num = new int[100];
+
+            int X = 84;
+            bool isXFound = false;
+
+            for (int i = 0; i < num.Length; i++)
+            {
+                num[i] = random.Next(0, 101);
+
+                if (num[i] == X)
+                {
+                    isXFound = true;
+                }
+            }
+            return isXFound;
+        }
+
+        public static bool IsAllTheArrayTheSame()
+        {
+            int[] arr = {5,5,5,5,5,5,5,5,5,5};
+
+            bool allTheSame = true;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] != arr[0])
+                {
+                    allTheSame = false;
+                }
+            }
+            return allTheSame;
+        }
+
+        public static bool IsFirstNumber()
+        {
+            Console.WriteLine("Enter a number: ");
+            int num = int.Parse(Console.ReadLine());
+            bool isFirst = false;
+
+            if ()
+            {
+                isFirst = true;
+            }
+            else
+                isFirst = false;
+            }
+        }
 
         static void Main(string[] args)
         {
-            // CalculateSum();
-            // ReadThreeEvenNumbers();
-            // ReadUntilThreeDigitNumber();
-            // PrintNumberTriangle();
-            // PrintNumberPyramid();
-            // CalculateLiterStatistics();
-            // PrintRectangle();
-            // ShowMenuAndExecute();
-            // InitializeBasicArray();
-            // CopyFixedArray();
-            // CountLetterFrequencies();
-            // CheckIfArrayAscends();
-            // CheckIfArrayIsHalved();
-            // MergeMaxFromTwoArrays();
-            // FindMostFrequentElement();
-            // TallyVotes();
-            // CountSmallerElements();
-            // FilterAndReplaceZeros();
+            //CalculateSum();
+            //ReadThreeEvenNumbers();
+            //ReadUntilThreeDigitNumber();
+            //PrintNumberTriangle();
+            //PrintNumberPyramid();
+            //CalculateLiterStatistics();
+            //PrintRectangle();
+            //ShowMenuAndExecute();
+            //InitializeBasicArray();
+            //CopyFixedArray();
+            //CountLetterFrequencies();
+            //CheckIfArrayAscends();
+            //CheckIfArrayIsHalved();
+            //MergeMaxFromTwoArrays();
+            //FindMostFrequentElement();
+            //TallyVotes();
+            //CountSmallerElements();
+            //FilterAndReplaceZeros();
             //ProcessGrades();
             //MostFrequentNumber();
+            //Console.WriteLine(FirstLastNumber());
+            //MiddleLetter();
+            //Console.WriteLine(First3LettersLast3Letters());
+            //Console.WriteLine(HowManyTimesCharShowsUpInString());
+            //CountEvenInArr();
+            //BiggerThan50InArr();
+            //SumOfArr();
+            //AverageOfArr();
+            //SmallestBiggestNumberInArr();
+            //Console.WriteLine(IsXInArr());
+            //Console.WriteLine(IsAllTheArrayTheSame());
+            Console.WriteLine(());
         }
     }
 }
